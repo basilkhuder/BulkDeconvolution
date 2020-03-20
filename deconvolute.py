@@ -4,7 +4,7 @@
 """
 normalize_cells() takes as input raw scRNA-Seq counts with cells classified by cell-types. Normalization completed through 
 scanPy with the default amount of variable genes to focus on set at 5000. Algorithm for finding variable genes set to
-Seurat
+Seurat. 
 """
 
 def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = False):
@@ -22,7 +22,7 @@ def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = F
     return counts_proc[counts_log.obs_names]
 
 """
-Take processed (normalized) counts and find average expression across cell-types 
+Take processed (normalized) counts and find average expression across cell-types. 
 """
     
 def celltype_mean(clusters, counts):
@@ -46,9 +46,13 @@ def runAg(sc_mean, ngen = 5000, nfeatures = 400, print_plot = False):
     pareto = ag.pareto
     return sc_mean[pareto[len(pareto)-1]]
 
+"""
+Function taken from AutoGeneS Manual to normalize bulk cell-type proportions 
+"""
+
 def normalize_proportions(data):
     data[data < 0] = 0
     for raw in data.index:
-        sum = data.loc[raw].sum()
-        data.loc[raw] = np.divide(data.loc[raw],sum)
+        data_sum = data.loc[raw].sum()
+        data.loc[raw] = np.divide(data.loc[raw],data_sum)
     return data
