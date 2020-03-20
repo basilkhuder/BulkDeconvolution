@@ -63,3 +63,4 @@ def produceProportions(ag, bulk_data, clusters):
     for raw in proportions_NuSVR.index:
         data_sum = proportions_NuSVR[raw].sum()
         proportions_NuSVR[raw] = np.divide(proportions_NuSVR.loc[raw],data_sum)
+    print(proportions_NuSVR) 
