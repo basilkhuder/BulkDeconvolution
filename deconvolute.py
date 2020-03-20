@@ -8,8 +8,8 @@ Seurat.
 """
 
 def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = False):
-    counts_norm = sc.pp.normalize_per_cell(counts, copy=True) 
-    counts_log = sc.pp.log1p(counts_norm, copy=True) 
+    counts_norm = sc.pp.normalize_per_cell(counts) 
+    counts_log = sc.pp.log1p(counts_norm) 
     sc.pp.highly_variable_genes(counts_log, flavor='seurat', n_top_genes=var_genes + 1)
     counts_proc = counts_norm[:, counts_log.var[counts_log.var['highly_variable']==True].index]
     sc.pp.pca(counts_log, n_comps=30, use_highly_variable=True, svd_solver='arpack')
