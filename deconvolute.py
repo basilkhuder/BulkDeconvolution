@@ -1,9 +1,8 @@
 #deconvolute.py
 #Basil Khuder
 
-
 """
-normalize_cells() Takes as input raw scRNA-Seq counts with cells classified by cell-types. Normalization completed through 
+normalize_cells() takes as input raw scRNA-Seq counts with cells classified by cell-types. Normalization completed through 
 scanPy with the default amount of variable genes to focus on set at 5000. Algorithm for finding variable genes set to
 Seurat
 """
