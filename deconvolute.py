@@ -47,7 +47,7 @@ def runAg(sc_mean, ngen = 5000, nfeatures = 400, print_plot = False):
     return sc_mean[pareto[len(pareto)-1]]
 
 """
-Function taken from AutoGeneS Manual to normalize bulk cell-type proportions 
+Function taken from AutoGeneS Manual to normalize bulk cell-type proportions. 
 """
 
 def normalize_proportions(data):
