@@ -1,3 +1,13 @@
+#deconvolute.py
+#Basil Khuder
+
+
+"""
+normalize_cells() Takes as input raw scRNA-Seq counts with cells classified by cell-types. Normalization completed through 
+scanPy with the default amount of variable genes to focus on set at 5000. Algorithm for finding variable genes set to
+Seurat
+"""
+
 def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = False):
     counts_norm = sc.pp.normalize_per_cell(counts, copy=True) 
     counts_log = sc.pp.log1p(counts_norm, copy=True) 
@@ -11,6 +21,10 @@ def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = F
         counts_log.obsm['X_pca'] *= -1
         print(sc.pl.pca_scatter(counts_log, color='cells'))
     return counts_proc[counts_log.obs_names]
+
+"""
+Take processed (normalized) counts and find average expression across cell-types 
+"""
     
 def celltype_mean(clusters, counts):
     sc_mean = pd.DataFrame(index=counts.var_names,columns=clusters)
@@ -19,6 +33,11 @@ def celltype_mean(clusters, counts):
         sc_part = counts[cells,:].X.T
         sc_mean[cluster] = pd.DataFrame(np.mean(sc_part,axis=1),index=counts.var_names)
     return sc_mean
+
+"""
+Runs the AutoGeneS pipeline to find marker genes that distinguish cell-types. Defaults are 5,000 optimization runs and
+400 marker genes. 
+"""
     
 def runAg(sc_mean, ngen = 5000, nfeatures = 400, print_plot = False):
     ag = AutoGenes(sc_mean.T)
