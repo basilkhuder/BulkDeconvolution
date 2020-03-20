@@ -2,7 +2,7 @@
 #Basil Khuder
 
 """
-normalize_cells() takes as input raw scRNA-Seq counts with cells classified by cell-types. Normalization completed through 
+Takes as input raw scRNA-Seq counts with cells classified by cell-types. Normalization completed through 
 scanPy with the default amount of variable genes to focus on set at 5000. Algorithm for finding variable genes set to
 Seurat. 
 """
@@ -22,7 +22,7 @@ def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = F
     return counts_proc[counts_log.obs_names]
 
 """
-Take processed (normalized) counts and find average expression across cell-types. 
+Takes processed (normalized) counts (normalized with normalize_cell() or other method) and find average expression across cell-types. 
 """
     
 def celltype_mean(clusters, counts):
