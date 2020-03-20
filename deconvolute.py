@@ -46,10 +46,20 @@ def runAg(sc_mean, ngen = 5000, nfeatures = 400, print_plot = False):
     pareto = ag.pareto
     return sc_mean[pareto[len(pareto)-1]]
 
+"""
+Produces normalized cell-type proportions for bulk-data based on upon AutoGeneS selected marker genes. 
+"""
 
-def normalize_proportions(data):
-    data[data < 0] = 0
-    for raw in data.index:
-        data_sum = data.loc[raw].sum()
-        data.loc[raw] = np.divide(data.loc[raw],data_sum)
-    return data
+def produceProportions(ag, bulk_data, clusters):
+    bulk_data = bulk_data.loc[ag.index,:]
+    bulk_data = bulk_data.dropna()
+    ag = ag.loc[bulk_data.index]
+    proportions_NuSVR = pd.DataFrame(columns=clusters)
+    for column in bulk_data.columns:
+        regr_NuSVR = NuSVR(nu=0.5,C=0.5,kernel='linear')
+        regr_NuSVR.fit(ag, bulk_data[column])
+        proportions_NuSVR.loc[column] = regr_NuSVR.coef_[0]
+    proportions_NuSVR[proportions_NuSVR < 0] = 0
+    for raw in proportions_NuSVR.index:
+        data_sum = proportions_NuSVR[raw].sum()
+        proportions_NuSVR[raw] = np.divide(proportions_NuSVR.loc[raw],data_sum)
