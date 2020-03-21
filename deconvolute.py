@@ -12,13 +12,11 @@ import seaborn as sns
 from sklearn.svm import NuSVR
 from autogenes import AutoGenes
 
-"""
-Takes as input raw scRNA-Seq counts with cells classified by cell-types. Normalization completed through 
-scanPy with the default amount of variable genes to focus on set at 5000. Algorithm for finding variable genes set to
-Seurat. 
-"""
 
 def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = False):
+    """Takes as input raw scRNA-Seq counts with cells classified by cell-types. Normalization completed through 
+    scanPy with the default amount of variable genes to focus on set at 5000. Algorithm for finding variable genes set to
+    Seurat."""
     counts_norm = sc.pp.normalize_per_cell(counts) 
     counts_log = sc.pp.log1p(counts_norm) 
     sc.pp.highly_variable_genes(counts_log, flavor='seurat', n_top_genes=var_genes + 1)
@@ -31,12 +29,10 @@ def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = F
         counts_log.obsm['X_pca'] *= -1
         print(sc.pl.pca_scatter(counts_log, color='cells'))
     return counts_proc[counts_log.obs_names]
-
-"""
-Takes processed (normalized) counts (normalized with normalize_cell() or other method) and find average expression across cell-types. 
-"""
     
 def celltype_mean(clusters, counts):
+    """Takes processed (normalized) counts (normalized with normalize_cell() or other method) and find average expression 
+    across cell-types."""
     sc_mean = pd.DataFrame(index=counts.var_names,columns=clusters)
     for cluster in clusters:
         cells = [x for x in counts.obs_names if x.startswith(cluster)]
@@ -44,12 +40,10 @@ def celltype_mean(clusters, counts):
         sc_mean[cluster] = pd.DataFrame(np.mean(sc_part,axis=1),index=counts.var_names)
     return sc_mean
 
-"""
-Runs the AutoGeneS pipeline to find marker genes that distinguish cell-types. Defaults are 5,000 optimization runs and
-400 marker genes. 
-"""
+def run_ag(sc_mean, ngen = 5000, nfeatures = 400, print_plot = False):
+    """Runs the AutoGeneS pipeline to find marker genes that distinguish cell-types. Defaults are 5,000 optimization runs and
+    400 marker genes."""
     
-def runAg(sc_mean, ngen = 5000, nfeatures = 400, print_plot = False):
     ag = AutoGenes(sc_mean.T)
     ag.run(ngen=ngen,seed=0,nfeatures=nfeatures,mode='fixed')
     if(print_plot == True):
@@ -57,11 +51,9 @@ def runAg(sc_mean, ngen = 5000, nfeatures = 400, print_plot = False):
     pareto = ag.pareto
     return sc_mean[pareto[len(pareto)-1]]
 
-"""
-Produces normalized cell-type proportions for bulk-data based on upon AutoGeneS selected marker genes. 
-"""
 
-def produceProportions(ag, bulk_data, clusters):
+def produce_proportions(ag, bulk_data, clusters):
+    """Produces normalized cell-type proportions for bulk-data based on upon AutoGeneS selected marker genes."""
     bulk_data = bulk_data.loc[ag.index,:]
     bulk_data = bulk_data.dropna()
     ag = ag.loc[bulk_data.index]
