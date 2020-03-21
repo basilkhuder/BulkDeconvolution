@@ -1,5 +1,16 @@
 #deconvolute.py
-#Basil Khuder
+#Basil 
+
+import pandas as pd
+import numpy as np
+import scanpy as sc
+import anndata as ad
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import scipy as sci
+import seaborn as sns
+from sklearn.svm import NuSVR
+from autogenes import AutoGenes
 
 """
 Takes as input raw scRNA-Seq counts with cells classified by cell-types. Normalization completed through 
