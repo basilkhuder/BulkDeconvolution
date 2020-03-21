@@ -1,17 +1,6 @@
 #deconvolute.py
 #Basil Khuder
 
-import pandas as pd
-import numpy as np
-import scanpy as sc
-import anndata as ad
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import scipy as sci
-import seaborn as sns
-from sklearn.svm import NuSVR
-from autogenes import AutoGenes
-
 
 def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = False):
     
