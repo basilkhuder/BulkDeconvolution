@@ -14,9 +14,11 @@ from autogenes import AutoGenes
 
 
 def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = False):
+    
     """Takes as input raw scRNA-Seq counts with cells classified by cell-types. Normalization completed through 
     scanPy with the default amount of variable genes to focus on set at 5000. Algorithm for finding variable genes set to
     Seurat."""
+    
     counts_norm = sc.pp.normalize_per_cell(counts) 
     counts_log = sc.pp.log1p(counts_norm) 
     sc.pp.highly_variable_genes(counts_log, flavor='seurat', n_top_genes=var_genes + 1)
@@ -31,8 +33,10 @@ def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = F
     return counts_proc[counts_log.obs_names]
     
 def celltype_mean(clusters, counts):
+    
     """Takes processed (normalized) counts (normalized with normalize_cell() or other method) and find average expression 
     across cell-types."""
+    
     sc_mean = pd.DataFrame(index=counts.var_names,columns=clusters)
     for cluster in clusters:
         cells = [x for x in counts.obs_names if x.startswith(cluster)]
@@ -41,6 +45,7 @@ def celltype_mean(clusters, counts):
     return sc_mean
 
 def run_ag(sc_mean, ngen = 5000, nfeatures = 400, print_plot = False):
+    
     """Runs the AutoGeneS pipeline to find marker genes that distinguish cell-types. Defaults are 5,000 optimization runs and
     400 marker genes."""
     
@@ -53,7 +58,9 @@ def run_ag(sc_mean, ngen = 5000, nfeatures = 400, print_plot = False):
 
 
 def produce_proportions(ag, bulk_data, clusters):
+    
     """Produces normalized cell-type proportions for bulk-data based on upon AutoGeneS selected marker genes."""
+    
     bulk_data = bulk_data.loc[ag.index,:]
     bulk_data = bulk_data.dropna()
     ag = ag.loc[bulk_data.index]
