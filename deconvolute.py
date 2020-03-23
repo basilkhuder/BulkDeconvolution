@@ -28,7 +28,7 @@ def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = F
         print(sc.pl.pca_scatter(counts_log, color='cells'))
     return counts_proc[counts_log.obs_names]
 
-def celltype_mean(clusters, counts):
+def celltype_mean(counts, clusters):
     """Finds cell-type averages across"""
     sc_mean = pd.DataFrame(index=counts.var_names,columns=clusters)
     for cluster in clusters:
