@@ -38,7 +38,7 @@ def celltype_mean(counts, clusters):
     return sc_mean
 
 
-def runAg(sc_mean, ngen = 5000, nfeatures = 400, print_plot = False):
+def run_ag(sc_mean, ngen = 5000, nfeatures = 400, print_plot = False):
     """Runs 5000 generations of optimizations using AutoGeneS and produces 400 marker genes to be used for deconvolution"""
     ag = AutoGenes(sc_mean.T)
     ag.run(ngen=ngen,seed=0,nfeatures=nfeatures,mode='fixed')
@@ -48,7 +48,7 @@ def runAg(sc_mean, ngen = 5000, nfeatures = 400, print_plot = False):
     return sc_mean[pareto[len(pareto)-1]]
 
 
-def produceProportions(ag, bulk_data, clusters):
+def produce_proportions(ag, bulk_data, clusters):
     """Produces normalized cell-type proportion for each cell-type"""
     bulk_data = bulk_data.loc[ag.index,:]
     bulk_data = bulk_data.dropna()
