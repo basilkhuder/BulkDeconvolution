@@ -11,6 +11,7 @@ from autogenes import AutoGenes
 
 
 def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = False):
+    """Log normalize cells and focus downstream on 5000 variable genes. Default algorithm is Seurat"""
     counts_norm = sc.pp.normalize_per_cell(counts, copy=True) 
     counts_log = sc.pp.log1p(counts_norm, copy=True) 
     sc.pp.highly_variable_genes(counts_log, flavor='seurat', n_top_genes=var_genes + 1)
@@ -25,6 +26,7 @@ def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = F
     return counts_proc[counts_log.obs_names]
 
 def celltype_mean(clusters, counts):
+    """Finds cell-type averages across"""
     sc_mean = pd.DataFrame(index=counts.var_names,columns=clusters)
     for cluster in clusters:
         cells = [x for x in counts.obs_names if x.startswith(cluster)]
@@ -34,6 +36,7 @@ def celltype_mean(clusters, counts):
 
 
 def runAg(sc_mean, ngen = 5000, nfeatures = 400, print_plot = False):
+    """Runs 5000 generations of optimizations using AutoGeneS and produces 400 marker genes to be used for deconvolution"""
     ag = AutoGenes(sc_mean.T)
     ag.run(ngen=ngen,seed=0,nfeatures=nfeatures,mode='fixed')
     if(print_plot == True):
@@ -43,6 +46,7 @@ def runAg(sc_mean, ngen = 5000, nfeatures = 400, print_plot = False):
 
 
 def produceProportions(ag, bulk_data, clusters):
+    """Produces normalized cell-type proportion for each cell-type"""
     bulk_data = bulk_data.loc[ag.index,:]
     bulk_data = bulk_data.dropna()
     ag = ag.loc[bulk_data.index]
