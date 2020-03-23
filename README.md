@@ -17,7 +17,7 @@ deconvolute the bulk sample. It uses the following packages:
 
 ## Usage
 
-Import ```denvolute.py``` and read in single-cell counts data via Scanpy. File should have cells classified by cell-type, and counts unnormalized. 
+Import ```denvolute``` and read in single-cell counts via Scanpy. File should have cells classified by cell-type, and counts unnormalized. 
 
 ``` python
 data = sc.read("counts.mtx")
