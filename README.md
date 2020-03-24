@@ -15,6 +15,8 @@ deconvolute the bulk sample. It uses the following packages:
 - AutoGeneS
 - MatplotLib
 
+See the jupyter notebook for a real run-down. 
+
 ## Usage
 
 Import ```denvolute``` and read in single-cell counts via Scanpy. File should have cells classified by cell-type, and counts unnormalized. If cell-types are not uniquely numbered (for example, if all T Cells are listed as T Cells rather than T Cells 1, T Cells 2, ect) use ```.obs_names_make_unique()```
@@ -30,7 +32,7 @@ Use ```deconvolute.normalize_cells()``` to log-transform counts. Set pca_plot an
 data_proc = deconvolute.normalize_cells(data, var_genes = 4000, scatter_plot = True, pca_plot = True)
 ```
 
-```run_ag()``` Calculates average expression across cells and uses AutoGeneS to generate list of marker genes to be used for deconvolution. Clusters is a numpy array that specifies names of all the cell-types. ```ngene``` is the number of optimization generations to run. 
+```run_ag()``` calculates average expression across cells and uses AutoGeneS to generate list of marker genes to be used for deconvolution. ```Clusters``` is a numpy array that specifies names of all the cell-types. ```ngene``` is the number of optimization generations to run. 
 
 ``` python
 data_ag = deconvolute.run_ag(data_proc, ngen = 2000, clusters =  np.array(['NK Cells', 'T Cells' ,'B Cells','DC Cells']))
