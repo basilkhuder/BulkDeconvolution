@@ -14,7 +14,6 @@ from autogenes import AutoGenes
 
 
 def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = False):
-    """Log normalize cells and focus downstream on 5000 variable genes. Default algorithm is Seurat"""
     counts_norm = sc.pp.normalize_per_cell(counts, copy=True) 
     counts_log = sc.pp.log1p(counts_norm, copy=True) 
     sc.pp.highly_variable_genes(counts_log, flavor='seurat', n_top_genes=var_genes + 1)
@@ -25,11 +24,10 @@ def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = F
     if(scatter_plot == True):
         counts_log.obs['cells'] = [x.split('-', 1)[0] for x in counts_log.obs_names]
         counts_log.obsm['X_pca'] *= -1
-        sc.pl.pca_scatter(counts_log, color='cells')
+        sc.pl.pca_scatter(counts_log, color ='cells')
     return counts_proc[counts_log.obs_names]
 
-def celltype_mean(counts, clusters):
-    """Finds cell-type averages across"""
+def celltype_mean(clusters, counts):
     sc_mean = pd.DataFrame(index=counts.var_names,columns=clusters)
     for cluster in clusters:
         cells = [x for x in counts.obs_names if x.startswith(cluster)]
@@ -38,23 +36,28 @@ def celltype_mean(counts, clusters):
     return sc_mean
 
 
-def run_ag(sc_mean, ngen = 5000, nfeatures = 400, print_plot = False):
-    """Runs 5000 generations of optimizations using AutoGeneS and produces 400 marker genes to be used for deconvolution"""
+def run_ag(counts, clusters, ngen = 5000, nfeatures = 400, print_plot = False):
+    sc_mean = pd.DataFrame(index=counts.var_names,columns=clusters)
+    for cluster in clusters:
+        cells = [x for x in counts.obs_names if x.startswith(cluster)]
+        sc_part = counts[cells,:].X.T
+        sc_mean[cluster] = pd.DataFrame(np.mean(sc_part,axis=1),index=counts.var_names)
     ag = AutoGenes(sc_mean.T)
     ag.run(ngen=ngen,seed=0,nfeatures=nfeatures,mode='fixed')
     if(print_plot == True):
         print(ag.plot(size='large',weights=(1,-1)))
-    pareto = ag.pareto
-    return sc_mean[pareto[len(pareto)-1]]
+    return sc_mean[ag.pareto[len(ag.pareto)-1]]
 
-def celltype_clustermap(ag):
+def celltype_correlation_map(ag):
+    """Returns correlation heatmaps for cell-types"""
     corr = pd.DataFrame(data = np.corrcoef(ag.T), columns = ag.columns, index = ag.columns)
     mask = np.zeros_like(corr)
     mask[np.triu_indices_from(mask)] = True
     return(sns.clustermap(np.abs(corr),cmap=sns.color_palette("GnBu", 1000), robust=True))
 
+
 def produce_proportions(ag, bulk_data, clusters):
-    """Produces normalized cell-type proportion for each cell-type"""
+    """produces normalized cell-type proportions"""
     bulk_data = bulk_data.loc[ag.index,:]
     bulk_data = bulk_data.dropna()
     ag = ag.loc[bulk_data.index]
@@ -64,7 +67,7 @@ def produce_proportions(ag, bulk_data, clusters):
         regr_NuSVR.fit(ag, bulk_data[column])
         proportions_NuSVR.loc[column] = regr_NuSVR.coef_[0]
     proportions_NuSVR[proportions_NuSVR < 0] = 0
-    for raw in proportions_NuSVR.index:
-        data_sum = proportions_NuSVR.loc[raw].sum()
-        proportions_NuSVR.loc[raw] = np.divide(proportions_NuSVR.loc[raw],data_sum)
-    print(proportions_NuSVR) 
+    for data in proportions_NuSVR.index:
+        data_sum = proportions_NuSVR.loc[data].sum()
+        proportions_NuSVR.loc[data] = np.divide(proportions_NuSVR.loc[i],data_sum)
+    return(proportions_NuSVR) 
