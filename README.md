@@ -30,10 +30,10 @@ Use ```deconvolute.normalize_cells()``` to log-transform counts. Set pca_plot an
 data_proc = deconvolute.normalize_cells(data, var_genes = 4000, scatter_plot = True, pca_plot = True)
 ```
 
-```run_ag()``` Calculates average expression across cells and AutoGeneS to generate list of marker genes to be used for deconvolution. Clusters is a numpy array that specifies names of all the cell-types. 
+```run_ag()``` Calculates average expression across cells and uses AutoGeneS to generate list of marker genes to be used for deconvolution. Clusters is a numpy array that specifies names of all the cell-types. ```ngene``` is the number of optimization generations to run. 
 
 ``` python
-data_ag = deconvolute.run_ag(data_proc)
+data_ag = deconvolute.run_ag(data_proc, ngen = 2000, clusters =  np.array(['NK Cells', 'T Cells' ,'B Cells','DC Cells']))
 ```
 
 ```produce_propotion()``` uses AutoGeneS-generated marker genes to produce cell-type proportions.
