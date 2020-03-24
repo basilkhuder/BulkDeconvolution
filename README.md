@@ -38,8 +38,8 @@ data_proc = deconvolute.normalize_cells(data, var_genes = 4000, scatter_plot = T
 data_ag = deconvolute.run_ag(data_proc, ngen = 2000, clusters =  np.array(['NK Cells', 'T Cells' ,'B Cells','DC Cells']))
 ```
 
-```produce_proportion()``` uses AutoGeneS-generated marker genes to produce cell-type proportions.
+```produce_proportions()``` uses AutoGeneS-generated marker genes to produce cell-type proportions.
 
 ``` python
-deconvolute.produce_proportion(data_ag, clusters = np.array(['NK Cells', 'T Cells' ,'B Cells','DC Cells']))
+deconvolute.produce_proportions(data_ag, clusters = np.array(['NK Cells', 'T Cells' ,'B Cells','DC Cells']))
 ```
