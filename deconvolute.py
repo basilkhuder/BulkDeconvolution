@@ -14,6 +14,7 @@ from autogenes import AutoGenes
 
 
 def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = False):
+    """Log-normalizes sc-counts and focuses on X amount of variable genes for downstream analysis"""
     counts_norm = sc.pp.normalize_per_cell(counts, copy=True) 
     counts_log = sc.pp.log1p(counts_norm, copy=True) 
     sc.pp.highly_variable_genes(counts_log, flavor='seurat', n_top_genes=var_genes + 1)
@@ -27,16 +28,9 @@ def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = F
         sc.pl.pca_scatter(counts_log, color ='cells')
     return counts_proc[counts_log.obs_names]
 
-def celltype_mean(clusters, counts):
-    sc_mean = pd.DataFrame(index=counts.var_names,columns=clusters)
-    for cluster in clusters:
-        cells = [x for x in counts.obs_names if x.startswith(cluster)]
-        sc_part = counts[cells,:].X.T
-        sc_mean[cluster] = pd.DataFrame(np.mean(sc_part,axis=1),index=counts.var_names)
-    return sc_mean
-
 
 def run_ag(counts, clusters, ngen = 5000, nfeatures = 400, print_plot = False):
+    """Finds average expression for cells and runs the AutoGeneS algorithm for finding X marker genes"""
     sc_mean = pd.DataFrame(index=counts.var_names,columns=clusters)
     for cluster in clusters:
         cells = [x for x in counts.obs_names if x.startswith(cluster)]
