@@ -17,10 +17,11 @@ deconvolute the bulk sample. It uses the following packages:
 
 ## Usage
 
-Import ```denvolute``` and read in single-cell counts via Scanpy. File should have cells classified by cell-type, and counts unnormalized. 
+Import ```denvolute``` and read in single-cell counts via Scanpy (use appropriate method depending on counts file format. File should have cells classified by cell-type, and counts unnormalized. If cell-types are not uniquely numbered (for example, if all T Cells are listed as T Cells rather than T Cells 1, T Cells 2, ect) use ```.obs_names_make_unique()```
 
 ``` python
-data = sc.read("counts.mtx")
+data = sc.read_csv("counts.csv")
+data.obs_names_make_unique()
 ```
 
 Use ```deconvolute.normalize_cells()``` to log-transform counts. Set pca_plot and scatter_plot to ```True``` to visualize PCA elbow plot and clustering:
