@@ -23,7 +23,7 @@ def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = F
     if(pca_plot == True):
         sc.pl.pca_variance_ratio(counts_log, log=True)
     if(scatter_plot == True):
-        counts_log.obs['cells'] = [x.split('.', 1)[0] for x in counts_log.obs_names]
+        counts_log.obs['cells'] = [x.split('-', 1)[0] for x in counts_log.obs_names]
         counts_log.obsm['X_pca'] *= -1
         sc.pl.pca_scatter(counts_log, color='cells')
     return counts_proc[counts_log.obs_names]
