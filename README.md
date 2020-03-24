@@ -15,7 +15,7 @@ deconvolute the bulk sample. It uses the following packages:
 - AutoGeneS
 - MatplotLib
 
-See the Jupyter Notebook for a full run-down. 
+See the [Jupyter Notebook](https://github.com/basilkhuder/BulkDeconvolution/blob/master/deconvolute.ipynb) for a full run-down. 
 
 ## Usage
 
