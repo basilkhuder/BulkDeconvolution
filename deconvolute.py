@@ -65,6 +65,6 @@ def produce_proportions(ag, bulk_data, clusters):
         proportions_NuSVR.loc[column] = regr_NuSVR.coef_[0]
     proportions_NuSVR[proportions_NuSVR < 0] = 0
     for raw in proportions_NuSVR.index:
-        data_sum = proportions_NuSVR[raw].sum()
-        proportions_NuSVR[raw] = np.divide(proportions_NuSVR.loc[raw],data_sum)
+        data_sum = proportions_NuSVR.loc[raw].sum()
+        proportions_NuSVR.loc[raw] = np.divide(proportions_NuSVR.loc[raw],data_sum)
     print(proportions_NuSVR) 
