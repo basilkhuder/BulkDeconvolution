@@ -21,11 +21,11 @@ def normalize_cells(counts, var_genes = 5000, pca_plot = False, scatter_plot = F
     counts_proc = counts_norm[:, counts_log.var[counts_log.var['highly_variable']==True].index]
     sc.pp.pca(counts_log, n_comps=30, use_highly_variable=True, svd_solver='arpack')
     if(pca_plot == True):
-        print(sc.pl.pca_variance_ratio(counts_log, log=True))
+        sc.pl.pca_variance_ratio(counts_log, log=True)
     if(scatter_plot == True):
         counts_log.obs['cells'] = [x.split('.', 1)[0] for x in counts_log.obs_names]
         counts_log.obsm['X_pca'] *= -1
-        print(sc.pl.pca_scatter(counts_log, color='cells'))
+        sc.pl.pca_scatter(counts_log, color='cells')
     return counts_proc[counts_log.obs_names]
 
 def celltype_mean(counts, clusters):
