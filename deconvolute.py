@@ -47,6 +47,11 @@ def run_ag(sc_mean, ngen = 5000, nfeatures = 400, print_plot = False):
     pareto = ag.pareto
     return sc_mean[pareto[len(pareto)-1]]
 
+def celltype_clustermap(ag):
+    corr = pd.DataFrame(data = np.corrcoef(ag.T), columns = ag.columns, index = ag.columns)
+    mask = np.zeros_like(corr)
+    mask[np.triu_indices_from(mask)] = True
+    return(sns.clustermap(np.abs(corr),cmap=sns.color_palette("GnBu", 1000), robust=True))
 
 def produce_proportions(ag, bulk_data, clusters):
     """Produces normalized cell-type proportion for each cell-type"""
