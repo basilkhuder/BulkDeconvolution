@@ -26,10 +26,10 @@ data = sc.read("counts.csv")
 data.obs_names_make_unique()
 ```
 
-Use ```deconvolute.normalize_cells()``` to log-transform counts. Set pca_plot and scatter_plot to ```True``` to visualize PCA elbow plot and clustering:
+Use ```deconvolute.normalize_cells()``` to log-transform counts. Set plot_pca and plot_umap to ```True``` to visualize PCA elbow plot and UMAP embedding:
 
 ``` python
-data_proc = deconvolute.normalize_cells(data, var_genes = 4000, scatter_plot = True, pca_plot = True)
+data_proc = deconvolute.normalize_cells(data, var_genes = 2000, plot_pca = True, pca_umap = True)
 ```
 
 ```run_ag()``` calculates average expression across cells and uses AutoGeneS to generate list of marker genes to be used for deconvolution. ```Clusters``` is a numpy array that specifies names of all the cell-types. ```ngene``` is the number of optimization generations to run. 
