@@ -50,7 +50,7 @@ dc.run_ag(ngen = 2000, nfeatures = 200)
 dc.run_ag(ngen = 2000, nfeatures = [200,1000], nfeatures_increments = 200)
 ```
 
-```produce_proportions()``` uses AutoGeneS-generated marker genes to produce cell-type proportions.
+```produce_proportions(bulk_data)``` uses AutoGeneS-generated marker genes to produce cell-type proportions on bulk RNA-Seq counts. 
 
 ``` python
 dc.produce_proportions()
