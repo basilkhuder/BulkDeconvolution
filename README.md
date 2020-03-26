@@ -18,7 +18,7 @@ See the [Jupyter Notebook](https://github.com/basilkhuder/BulkDeconvolution/blob
 
 ## Usage
 
-Import ```deconvolute.Deconvolute``` and read in single-cell counts via Scanpy. File should have cells classified by cell-type, and counts unnormalized. If cell-types are not uniquely numbered (for example, if all T Cells are listed as T Cells rather than T Cells 1, T Cells 2, ect) use ```.obs_names_make_unique()```
+Import ```deconvolute``` and read in single-cell counts via Scanpy. File should have cells classified by cell-type, and counts unnormalized. If cell-types are not uniquely numbered (for example, if all T Cells are listed as T Cells rather than T Cells 1, T Cells 2, ect) use ```.obs_names_make_unique()```
 
 ``` python
 import pandas as pd
