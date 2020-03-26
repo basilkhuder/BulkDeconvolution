@@ -19,7 +19,7 @@ class Deconvolute():
     self.ag_pareto = []
     self.proportions = []
 
-  def normalize_cells(self, var_genes = 5000, plot_pca = False, plot_umap = False, n_neighbors=15, n_pcs = None):
+  def normalize_cells(self, var_genes = 2000, plot_pca = False, plot_umap = False, n_neighbors=15, n_pcs = None):
     self.counts_norm = sc.pp.normalize_per_cell(self.counts, copy=True) 
     self.counts_log = sc.pp.log1p(self.counts, copy=True) 
     sc.pp.highly_variable_genes(self.counts_log, flavor='seurat', n_top_genes=var_genes)
@@ -33,7 +33,7 @@ class Deconvolute():
         sc.tl.umap(self.counts_norm)
         sc.pl.umap(self.counts_norm, color = 'cells')
       
-  def run_ag(self, ngen = 5000, nfeatures = 400, nfeatures_increment = 10, print_plot = False):
+  def run_ag(self, ngen = 5000, nfeatures = 200, nfeatures_increment = 10, print_plot = False):
     sc_mean = pd.DataFrame(index=self.counts_norm.var_names,columns=self.clusters)
     for i in self.clusters:
         index_cells = [x for x in self.counts_norm.obs_names if x.startswith(i)]
