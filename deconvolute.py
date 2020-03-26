@@ -59,11 +59,11 @@ class Deconvolute():
       sns.clustermap(np.abs(corr),cmap=sns.color_palette("GnBu", 1000), robust=True)
         
   def produce_proportions(self,bulk_data):
-    proportions_NuSVR = pd.DataFrame(columns=self.clusters)
     for i in range(len(self.ag_pareto)):
-        data_subset = bulk_data.loc[self.ag_pareto[i].index,:]
-        data_subset = data_subset.dropna()
-        ag = self.ag_pareto[i].loc[data_subset.index]
+      proportions_NuSVR = pd.DataFrame(columns=self.clusters)
+      data_subset = bulk_data.loc[self.ag_pareto[i].index,:]
+      data_subset = data_subset.dropna()
+      ag = self.ag_pareto[i].loc[data_subset.index]
         for j in data_subset.columns:
             regr_NuSVR = NuSVR(nu=0.5,C=0.5,kernel='linear')
             regr_NuSVR.fit(ag, data_subset[j])
