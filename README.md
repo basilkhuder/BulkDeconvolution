@@ -47,11 +47,12 @@ dc.normalize_cells(var_genes = 2000, plot_pca = True, plot_umap = True)
 #For only 200 marker genes
 dc.run_ag(ngen = 2000, nfeatures = 200)
 #For 200 to 1000 marker genes in increments of 200
-dc.run_ag(ngen = 2000, nfeatures = [200,1000], nfeatures_increments = 200)
+dc.run_ag(ngen = 2000, nfeatures = [200,1000], nfeatures_increment = 200)
 ```
 
 ```produce_proportions(bulk_data)``` uses AutoGeneS-generated marker genes to produce cell-type proportions on bulk RNA-Seq counts. 
 
 ``` python
+bulk_data = pd.read_csv("bulk_counts.txt", index_col = 0, sep = "\t")
 dc.produce_proportions()
 ```
