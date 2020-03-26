@@ -51,6 +51,13 @@ class Deconvolute():
         self.ag.run(ngen=ngen,seed=0,nfeatures=nfeatures,mode='fixed', verbose = False)
         self.ag_pareto.append(sc_mean[self.ag.pareto[len(self.ag.pareto)-1]])
         
+  def cell_corr_map(self):
+    for i in range(len(self.ag_pareto))
+      corr = pd.DataFrame(data = np.corrcoef(self.ag_pareto[i].T), columns = self.ag_pareto[i].columns, index = self.ag_pareto[i].columns)
+      mask = np.zeros_like(corr)
+      mask[np.triu_indices_from(mask)] = True
+      sns.clustermap(np.abs(corr),cmap=sns.color_palette("GnBu", 1000), robust=True)
+        
   def produce_proportions(self,bulk_data):
     proportions_NuSVR = pd.DataFrame(columns=self.clusters)
     for i in range(len(self.ag_pareto)):
@@ -67,13 +74,6 @@ class Deconvolute():
             proportions_NuSVR.loc[k] = np.divide(proportions_NuSVR.loc[k],data_sum)
         self.proportions.append(proportions_NuSVR)
             
-    
-  def cell_corr_map(self):
-    for i in range(len(self.ag_pareto)):
-        corr = pd.DataFrame(data = np.corrcoef(self.ag_pareto[i].T), columns = self.ag_pareto[i].columns, index = self.ag_pareto[i].columns)
-        mask = np.zeros_like(corr)
-        mask[np.triu_indices_from(mask)] = True
-        sns.clustermap(np.abs(corr),cmap=sns.color_palette("GnBu", 1000), robust=True)
         
   def __repr__(self):
     return("Deconvolute object with {} clusters, {} genes and {} cells".format(len(self.clusters),len(self.counts.obs),len(self.counts.var)))
