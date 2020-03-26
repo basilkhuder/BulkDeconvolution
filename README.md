@@ -22,24 +22,36 @@ See the [Jupyter Notebook](https://github.com/basilkhuder/BulkDeconvolution/blob
 Import ```denvolute``` and read in single-cell counts via Scanpy. File should have cells classified by cell-type, and counts unnormalized. If cell-types are not uniquely numbered (for example, if all T Cells are listed as T Cells rather than T Cells 1, T Cells 2, ect) use ```.obs_names_make_unique()```
 
 ``` python
+import pandas as pd
+import numpy as np
+import scanpy as sc
+import deconvolute as Deconvolute
 data = sc.read("counts.csv")
 data.obs_names_make_unique()
 ```
-
-Use ```deconvolute.normalize_cells()``` to log-transform counts and set amount of variable genes for downstream analysis. Set plot_pca and plot_umap to ```True``` to visualize PCA elbow plot and UMAP embedding:
+Create a new Deconvolute object with the imported counts and clusters. Clusters is a numpy array specifying all of the cell-types.
 
 ``` python
-data_proc = deconvolute.normalize_cells(data, var_genes = 2000, plot_pca = True, plot_umap = True)
+dc = Deconvolute(counts, clusters =  np.array(['NK Cells', 'T Cells' ,'B Cells','DC Cells']))
 ```
 
-```run_ag()``` calculates average expression across cells and uses AutoGeneS to generate list of marker genes to be used for deconvolution. ```Clusters``` is a numpy array that specifies names of all the cell-types. ```ngene``` is the number of optimization generations to run. 
+Use ```normalize_cells()``` to log-transform counts and set amount of variable genes for downstream analysis. Set plot_pca and plot_umap to ```True``` to visualize PCA elbow plot and UMAP embedding:
 
 ``` python
-data_ag = deconvolute.run_ag(data_proc, ngen = 2000, clusters =  np.array(['NK Cells', 'T Cells' ,'B Cells','DC Cells']))
+dc.normalize_cells(var_genes = 2000, plot_pca = True, plot_umap = True)
+```
+
+```run_ag()``` calculates average expression across cells and uses AutoGeneS to generate list of marker genes to be used for deconvolution. ```ngen``` is the number of optimization generations to run, ```nfeatures``` is the number of marker genes to select. If you want to look at a range of marker genes, put them in a list and use ```nfeatures_increment``` to specficy the increments:
+
+``` python
+#For only 200 marker genes
+dc.run_ag(ngen = 2000, nfeatures = 200)
+#For 200 to 1000 marker genes in increments of 200
+dc.run_ag(ngen = 2000, nfeatures = [200,1000], nfeatures_increments = 200)
 ```
 
 ```produce_proportions()``` uses AutoGeneS-generated marker genes to produce cell-type proportions.
 
 ``` python
-deconvolute.produce_proportions(data_ag, clusters = np.array(['NK Cells', 'T Cells' ,'B Cells','DC Cells']))
+dc.produce_proportions()
 ```
