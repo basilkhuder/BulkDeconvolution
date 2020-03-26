@@ -5,7 +5,7 @@ Basil Khuder
 Being able to determine cellular heteorgenity in Bulk RNA-Seq data is possible through deconvolution. By taking a scRNA-Seq dataset made 
 up of cells of the same tissue, we can find marker genes that will help significantly differentiate our bulk sample(s). 
 
-*deconvolute.py* allows for normalization of single-cell datasets to find an appropriate and represenative amount of  marker genes to be used to deconvolute a bulk  RNA-Seq sample. It uses the following packages: 
+*deconvolute.py* allows for normalization of single-cell datasets to find an appropriate and representative amount of  marker genes to be used to deconvolute a bulk RNA-Seq sample. It uses the following packages: 
 
 - scanPy
 - AnnData
