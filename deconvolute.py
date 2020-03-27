@@ -41,15 +41,6 @@ class Deconvolute():
     else:
         ag.run(ngen=gen,seed=0,nfeatures=markers,mode='fixed')
         self.ag.append(cm[ag.pareto[len(ag.pareto)-1]])
-
-      def plot_marker_variance(self, var_range, incr):
-        var_range = [i for i in range(markers[0],markers[1] + incr, incr)]
-        df_list = []
-        for i in var_range:
-            ag.run(ngen=gen,seed=0,nfeatures=i,mode='fixed')
-            df_list.append(cm[ag.pareto[len(ag.pareto)-1]])
-        for i in df_list:
-            df_list
             
   def produce_proportions(self,bulk):
     for i in range(len(self.ag)):
@@ -68,4 +59,3 @@ class Deconvolute():
         pro_df
         self.pro.append(pro_df)
         
-    
