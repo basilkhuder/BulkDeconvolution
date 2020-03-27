@@ -18,7 +18,7 @@ See the [Jupyter Notebook](https://github.com/basilkhuder/BulkDeconvolution/blob
 
 ## Usage
 
-Import ```deconvolute``` and read in single-cell counts via Scanpy. File should have cells classified by cell-type, and counts unnormalized. If cell-types are not uniquely numbered (for example, if all T Cells are listed as T Cells rather than T Cells 1, T Cells 2, ect) use ```.obs_names_make_unique()```
+Import ```deconvolute``` and read in single-cell counts and bulk counts via Scanpy. File should have cells classified by cell-type, and counts unnormalized. If cell-types are not uniquely numbered (for example, if all T Cells are listed as T Cells rather than T Cells 1, T Cells 2, ect) use ```.obs_names_make_unique()```
 
 ``` python
 import pandas as pd
@@ -26,12 +26,13 @@ import numpy as np
 import scanpy as sc
 from deconvolute import Deconvolute
 data = sc.read("counts.csv")
+bulk = sc.read("bulk.csv")
 data.obs_names_make_unique()
 ```
 Create a new Deconvolute object with the imported counts and clusters. Clusters is a numpy array specifying all of the cell-types.
 
 ``` python
-dc = Deconvolute(counts, clusters =  np.array(['NK Cells', 'T Cells' ,'B Cells','DC Cells']))
+dc = Deconvolute(sc_counts = data, bulk_counts = bulk, clusters =  np.array(['NK Cells', 'T Cells' ,'B Cells','DC Cells']))
 ```
 
 Use ```normalize_cells()``` to log-transform counts and set amount of variable genes for downstream analysis. Set plot_pca and plot_umap to ```True``` to visualize PCA elbow plot and UMAP embedding:
