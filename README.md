@@ -24,7 +24,7 @@ Import ```deconvolute``` and read in single-cell counts via Scanpy. File should 
 import pandas as pd
 import numpy as np
 import scanpy as sc
-import deconvolute as Deconvolute
+from deconvolute import Deconvolute
 data = sc.read("counts.csv")
 data.obs_names_make_unique()
 ```
