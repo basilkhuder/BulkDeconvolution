@@ -9,10 +9,11 @@ import seaborn as sns
 from sklearn.svm import NuSVR
 from autogenes import AutoGenes
 
-class Deconvolute():
-  def __init__(self, counts, clusters):
+class De():
+  def __init__(self, counts, bulk, clusters):
     self.counts = counts
     self.clusters = clusters
+    self.bulk = bulk
     self.ag = []
     self.pro = []
     
@@ -41,11 +42,11 @@ class Deconvolute():
     else:
         ag.run(ngen=gen,seed=0,nfeatures=markers,mode='fixed')
         self.ag.append(cm[ag.pareto[len(ag.pareto)-1]])
-            
-  def produce_proportions(self,bulk):
+
+  def produce_proportions(self):
     for i in range(len(self.ag)):
         pro_df = pd.DataFrame(columns=self.clusters)
-        bulk_sub = bulk.loc[self.ag[i].index,:]
+        bulk_sub = self.bulk.loc[self.ag[i].index,:]
         bulk_sub = bulk_sub.dropna()
         self.ag[i] = self.ag[i].loc[bulk_sub.index]
         for j in bulk_sub.columns:
@@ -58,4 +59,4 @@ class Deconvolute():
             pro_df.loc[k] = np.divide(pro_df.loc[k],summ)
         pro_df
         self.pro.append(pro_df)
-        
+    
