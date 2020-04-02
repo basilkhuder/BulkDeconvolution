@@ -12,9 +12,6 @@ up of cells of the same tissue, we can find marker genes that will help signific
 - Seaborn
 - Sklearn
 - AutoGeneS
-- MatplotLib
-
-See the [Jupyter Notebook](https://github.com/basilkhuder/BulkDeconvolution/blob/master/deconvolute.ipynb) for a full run-down. 
 
 ## Usage
 
