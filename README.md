@@ -51,5 +51,5 @@ dc.run_ag(ngen = 2000, nfeatures = [200,1000], nfeatures_increment = 200)
 
 ``` python
 bulk_data = pd.read_csv("bulk_counts.txt", index_col = 0, sep = "\t")
-dc.produce_proportions()
+dc.produce_proportions(bulk_data)
 ```
