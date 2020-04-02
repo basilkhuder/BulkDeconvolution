@@ -1,5 +1,6 @@
 # Deconvolution of Bulk RNA-Seq
 Basil Khuder
+Updated: 4/2/20
 
 -------
 Being able to determine cellular heteorgenity in Bulk RNA-Seq data is possible through deconvolution. By taking a scRNA-Seq dataset made 
@@ -26,7 +27,7 @@ data = sc.read("counts.csv")
 bulk = sc.read("bulk.csv")
 dc = Deconvolute(sc_counts = "counts.csv", bulk = "bulk.csv")
 ```
-Use ```normalize_cells()``` to perform library-size correction, log-transformation and variable gene identification. Set plot_pca and plot_umap to ```True``` to visualize PCA elbow plot and UMAP embedding:
+Use ```normalize_cells()``` to perform library-size correction, log-transformation and variable gene identification. Set ```plot_pca``` and ```plot_umap``` to ```True``` to visualize PCA elbow plot and UMAP embedding:
 
 ``` python
 dc.normalize_cells(var_genes = 2000, plot_pca = True, plot_umap = True)
