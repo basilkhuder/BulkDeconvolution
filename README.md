@@ -23,8 +23,6 @@ import pandas as pd
 import numpy as np
 import scanpy as sc
 from deconvolute import Deconvolute
-data = sc.read("counts.csv")
-bulk = sc.read("bulk.csv")
 dc = Deconvolute(sc_counts = "counts.csv", bulk = "bulk.csv")
 ```
 Use ```normalize_cells()``` to perform library-size correction, log-transformation and variable gene identification. Set ```plot_pca``` and ```plot_umap``` to ```True``` to visualize PCA elbow plot and UMAP embedding:
