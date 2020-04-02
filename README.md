@@ -35,7 +35,7 @@ dc.normalize_cells(var_genes = 2000, plot_pca = True, plot_umap = True)
 
   - ```gen``` is the number of generations to run using AutoGeneS which aims at maximizing the Euclidean distance, while minimizing the correlation of the set of marker genes. 
 
-  - ```markers``` is the number of marker genes to select. If you want to look at a range of marker genes, put them in a list and use  -   - ```incr``` to specficy the increments:
+  - ```markers``` is the number of marker genes to select. If you want to look at a range of marker genes, put them in a list and use  ```incr``` to specficy the increments:
 
 ``` python
 #For only 200 marker genes
