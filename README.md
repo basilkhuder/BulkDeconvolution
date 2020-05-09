@@ -1,8 +1,10 @@
 # Deconvolution of Bulk RNA-Seq
 Basil Khuder
-Updated: 4/2/20
+Updated: 5/9/20
 
 -------
+**Update: 5/9/20**: *The latest version of [AutoGeneS](https://autogenes.readthedocs.io/en/latest/getting_started.html) includes a pipeline parameter that does everything that this package does and more. It's advised to use that rather than this package, as it will no longer be maintained.*
+
 Being able to determine cellular heteorgenity in Bulk RNA-Seq data is possible through deconvolution. By taking a scRNA-Seq dataset made 
 up of cells of the same tissue, we can find marker genes that will help significantly differentiate our bulk sample(s). 
 
